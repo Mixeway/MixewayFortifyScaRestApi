@@ -1,12 +1,15 @@
 language: java
 
+script:
+  - mvn package -DskipTests
+
 deploy:
-  script: mvn package
   provider: releases
   skip_cleanup: true
   api_key: $GH_TOKEN
   file_glob: true
   file:
-    - "target/fortifyscaapi-*.jar"
+    - "README.md"
+    - "target/fortify*.jar"
   on:
     tags: true

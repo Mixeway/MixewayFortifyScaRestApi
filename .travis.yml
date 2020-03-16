@@ -2,11 +2,10 @@ language: java
 addons:
   sonarcloud:
     organization: "mixeway"
-    token:
-      secure: $SONAR_TOKEN
+    token:  ${SONAR_TOKEN}
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=Mixeway_MixewayFortifyScaRestApi
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=Mixeway_MixewayFortifyScaRestApi -Dsonar.login=${SONAR_TOKEN}
   - mvn package -DskipTests
 
 deploy:

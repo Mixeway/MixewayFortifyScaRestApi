@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/Mixeway/MixewayFortifyScaRestApi.svg?branch=master)](https://travis-ci.org/Mixeway/MixewayFortifyScaRestApi)
-
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Mixeway_MixewayFortifyScaRestApi&metric=alert_status)](https://sonarcloud.io/dashboard?id=Mixeway_MixewayFortifyScaRestApi)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Mixeway_MixewayFortifyScaRestApi&metric=security_rating)](https://sonarcloud.io/dashboard?id=Mixeway_MixewayFortifyScaRestApi)
 <img src="https://mixeway.github.io/img/mixewaybadge.png">
 
 # Mixeway Fortify SCA Rest API <img src="https://mixeway.github.io/img/logo_dashboard.png" height="60px">

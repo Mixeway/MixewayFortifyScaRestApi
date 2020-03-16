@@ -18,6 +18,9 @@ During scan phase executed by REST API there is GIT actions made on a code base 
 to introduce OpenSource vulnerability scanning, so it is possible to use OWASP DependencyTrack integration at this stage.
 Integration with DependencyTrack is being done via prepared shell scripts which can be found in `DependencyTrackScripts` directory.
 
+### Download
+
+
 ### Startup
 ```
 java -Dhttps.proxyPort=<proxyPort> \

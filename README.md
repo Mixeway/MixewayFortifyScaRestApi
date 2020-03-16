@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Mixeway/MixewayFortifyScaRestApi.svg?branch=master)](https://travis-ci.org/Mixeway/MixewayFortifyScaRestApi)
+
 <img src="https://mixeway.github.io/img/mixewaybadge.png">
 
 # Mixeway Fortify SCA Rest API <img src="https://mixeway.github.io/img/logo_dashboard.png" height="60px">
@@ -19,7 +21,7 @@ to introduce OpenSource vulnerability scanning, so it is possible to use OWASP D
 Integration with DependencyTrack is being done via prepared shell scripts which can be found in `DependencyTrackScripts` directory.
 
 ### Download
-
+Get newest release from release page - https://github.com/Mixeway/MixewayFortifyScaRestApi/releases
 
 ### Startup
 ```

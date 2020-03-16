@@ -1,0 +1,15 @@
+language: java
+
+
+script:
+  - mvn package
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: $GH_TOKEN
+  file_glob: true
+  file:
+    - "target/fortifyscaapi-*.jar"
+  on:
+    tags: true

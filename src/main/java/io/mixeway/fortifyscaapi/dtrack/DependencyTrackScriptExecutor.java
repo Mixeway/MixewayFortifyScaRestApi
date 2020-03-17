@@ -16,6 +16,9 @@ public class DependencyTrackScriptExecutor {
 
         ProcessBuilder builder = new ProcessBuilder();
         builder.command("sh", "-c", script,project.getdTrackUuid(), createScanRequest.getdTrackUrl(), createScanRequest.getdTrackToken());
+        logger.info("Running {} inside {}",String.join(" ",
+                Arrays.asList("sh", "-c", script,project.getdTrackUuid(), createScanRequest.getdTrackUrl(), createScanRequest.getdTrackToken())),
+                path.toFile());
         builder.directory(path.toFile());
         Process process = builder.start();
     }

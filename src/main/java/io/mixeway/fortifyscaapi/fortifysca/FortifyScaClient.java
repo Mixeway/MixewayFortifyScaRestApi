@@ -83,19 +83,19 @@ public class FortifyScaClient {
                 case "PHP":
                     executeCommand(createScanRequest, project, sourceAnalyzerForPHP(createScanRequest.getGroupName()), fortifyScan);
                     if (project.getdTrackUuid() != null) {
-                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest, project,dTrackPHP);
+                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest, project,dTrackPHP,Paths.get(location + project.getProjectName()));
                     }
                     break;
                 case "JS":
                     executeCommand(createScanRequest, project, sourceAnalyzerForJs(createScanRequest.getGroupName()), fortifyScan);
                     if (project.getdTrackUuid() != null) {
-                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest,project,dTrackJs);
+                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest,project,dTrackJs, Paths.get(location + project.getProjectName()));
                     }
                     break;
                 case "MVN":
                     executeCommand(createScanRequest, project, sourceAnalyzerForMaven(createScanRequest.getGroupName()), fortifyScan);
                     if (project.getdTrackUuid() != null) {
-                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest, project,dTrackMvn);
+                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest, project,dTrackMvn, Paths.get(location + project.getProjectName()));
                     }
                     break;
                 case "ANT":
@@ -105,7 +105,7 @@ public class FortifyScaClient {
                 case "PYTHON":
                     executeCommand(createScanRequest, project, sourceAnalyzerForPython(createScanRequest.getGroupName()), fortifyScan);
                     if (project.getdTrackUuid() != null) {
-                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest, project,dTrackPy);
+                        dependencyTrackScriptExecutor.runDTrackScript(createScanRequest, project,dTrackPy, Paths.get(location + project.getProjectName()));
                     }
                     break;
                 default:

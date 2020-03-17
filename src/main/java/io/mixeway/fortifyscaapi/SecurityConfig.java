@@ -71,8 +71,6 @@ public class SecurityConfig {
             public UserDetails loadUserByUsername(String username) {
                 if (verifyCN(username)) {
                     return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
-                } else if (username=="dev"){
-                    return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
                 } else
                     throw new UsernameNotFoundException("User not found!");
             }

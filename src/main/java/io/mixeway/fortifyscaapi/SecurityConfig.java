@@ -25,8 +25,7 @@ import java.util.stream.Stream;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Value("${allowed.users}")
-    private String commonNames;
+
 
     @Profile("dev")
     @Configuration
@@ -48,6 +47,9 @@ public class SecurityConfig {
     @Configuration
     public static class ProdSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+        @Value("${allowed.users}")
+        private String commonNames;
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             System.out.println("Enabling production mode");
@@ -61,25 +63,23 @@ public class SecurityConfig {
                     .subjectPrincipalRegex("CN=(.*?)(?:,|$)")
                     .userDetailsService(userDetailsService());
         }
-    }
-
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) {
+        @Bean
+        public UserDetailsService userDetailsService() {
+            return username -> {
                 if (verifyCN(username)) {
                     return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
                 } else
                     throw new UsernameNotFoundException("User not found!");
-            }
-        };
+            };
+        }
+        private boolean verifyCN(String cn){
+            List<String> allowedCNs =
+                    Stream.of(commonNames.split(","))
+                            .collect(Collectors.toList());
+            return allowedCNs.contains(cn);
+        }
     }
-    private boolean verifyCN(String cn){
-        List<String> allowedCNs =
-                Stream.of(commonNames.split(","))
-                        .collect(Collectors.toList());
-        return allowedCNs.contains(cn);
-    }
+
+
+
 }

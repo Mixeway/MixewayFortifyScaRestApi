@@ -73,17 +73,11 @@ public class FortifyRestApiService {
                         gitResponse = gitClient.pull(createScanRequest,project, path);
                         if (!gitResponse.getStatus())
                             throw new Exception("Some kind of error during pulling repo for " + project.getProjectName());
-                        logger.info("Successfully fetched repo for {} commid id is {} branch {}",
-                                project.getProjectName(),
-                                gitResponse.getCommitId(),
-                                project.getBranch() );
-
                     } else {
                         //git clone
                         gitResponse = gitClient.clone(createScanRequest,project, path);
                         if (!gitResponse.getStatus())
                             throw new Exception("Some kind of error during cloning repo for " + project.getProjectName());
-                        logger.info("Successfully cloned repo for {} commit id is {}", project.getProjectName(),gitResponse.getCommitId());
                     }
                     fortifyScaClient.runTranslateForRequest(createScanRequest,project,fortifyScan);
                 }

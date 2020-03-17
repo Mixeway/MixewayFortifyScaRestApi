@@ -39,6 +39,7 @@ public class FortifyScaClient {
     @Value("${dependencytrack.script.php}")
     private String dTrackPHP;
 
+    //TODO create arrays here
     private String sourceAnalyzerForJs(String groupName){
         return "sourceanalyzer -b "+groupName+" **/*.tsx -Dcom.fortify.sca.Phase0HigherOrder.Languages=javascript,typescript -Dcom.fortify.sca.EnableDOMModeling=true -Dcom.fortify.sca.TypeInferenceLanguages=tytypescript,javascript && " +
                 "sourceanalyzer -b "+groupName+" **/*.ts -Dcom.fortify.sca.Phase0HigherOrder.Languages=javascript,typescript -Dcom.fortify.sca.EnableDOMModeling=true -Dcom.fortify.sca.TypeInferenceLanguages=tytypescript,javascript && " +

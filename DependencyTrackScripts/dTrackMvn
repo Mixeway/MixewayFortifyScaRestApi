@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 PROJECT=$1
 URL=$2
 TOKEN=$3
 mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
 BOM=$(base64 target/bom.xml |tr -d \\n)
 POSTDATA="{\"project\":\"$PROJECT\",\"bom\":\"$BOM\"}"
-curl -X "PUT" $URL \
+curl -X "PUT" "$URL/api/v1/bom" \
      -k \
      --noproxy "*" \
      -H 'Content-Type: application/json' \

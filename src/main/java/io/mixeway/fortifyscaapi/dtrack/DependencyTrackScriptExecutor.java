@@ -15,7 +15,7 @@ public class DependencyTrackScriptExecutor {
         logger.info("Starting to generate BOM for {}", project.getProjectName());
 
         ProcessBuilder builder = new ProcessBuilder();
-        builder.command("sh", "-c", script,project.getdTrackUuid(), createScanRequest.getdTrackUrl(), createScanRequest.getdTrackToken());
+        builder.command("/bin/sh", script,project.getdTrackUuid(), createScanRequest.getdTrackUrl(), createScanRequest.getdTrackToken());
         logger.info("Running {} inside {}",String.join(" ",
                 Arrays.asList("sh", "-c", script,project.getdTrackUuid(), createScanRequest.getdTrackUrl(), createScanRequest.getdTrackToken())),
                 path.toFile());

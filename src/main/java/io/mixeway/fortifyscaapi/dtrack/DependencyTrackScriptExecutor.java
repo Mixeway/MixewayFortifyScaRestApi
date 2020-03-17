@@ -1,6 +1,5 @@
 package io.mixeway.fortifyscaapi.dtrack;
 
-import com.sun.deploy.util.ArrayUtil;
 import io.mixeway.fortifyscaapi.pojo.CreateScanRequest;
 import io.mixeway.fortifyscaapi.pojo.Project;
 import org.slf4j.Logger;

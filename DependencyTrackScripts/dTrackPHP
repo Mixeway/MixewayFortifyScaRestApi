@@ -1,0 +1,16 @@
+#!/bin/sh
+PROJECT=$1
+URL=$2
+TOKEN=$3
+composer require --dev cyclonedx/cyclonedx-php-composer --ignore-platform-reqs
+composer make-bom
+BOM=$(base64 bom.xml |tr -d \\n)
+POSTDATA="{\"project\":\"$PROJECT\",\"bom\":\"$BOM\"}"
+curl -X "PUT" $URL \
+     -k \
+     --noproxy "*" \
+     -H 'Content-Type: application/json' \
+     -H 'X-API-Key: '$TOKEN \
+     -d @- "$HOST" <<CURL_DATA
+        $POSTDATA
+CURL_DATA

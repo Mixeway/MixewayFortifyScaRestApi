@@ -23,22 +23,19 @@ import java.nio.file.Paths;
 public class GitClient {
     private Logger logger = LoggerFactory.getLogger(GitClient.class);
 
-    @Value("${code.base.location}")
-    private String location;
-
-    public GitResponse pull(CreateScanRequest createScanRequest, Project project){
+    public GitResponse pull(CreateScanRequest createScanRequest, Project project, Path path){
         try {
             FileRepositoryBuilder builder = new FileRepositoryBuilder();
-            CredentialsProvider credentialsProvider = new
-                    UsernamePasswordCredentialsProvider("PRIVATE-TOKEN", createScanRequest.getPassword());
+            CredentialsProvider credentialsProvider = prepareCredentails(createScanRequest);
 
-            Repository repository = builder.setGitDir(Paths.get(location + project.getProjectName() + "/.git").toFile())
+            Repository repository = builder.setGitDir(Paths.get(path.toString() + "/.git").toFile())
                     .readEnvironment()
                     .findGitDir()
                     .build();
             Git git = new Git(repository);
             git.reset().setMode(ResetCommand.ResetType.HARD).call();
             git.pull()
+                    .setRemote("origin")
                     .setStrategy(MergeStrategy.THEIRS)
                     .setCredentialsProvider(credentialsProvider)
                     .setRemoteBranchName(project.getBranch())
@@ -52,11 +49,10 @@ public class GitClient {
         }
         return new GitResponse(false,"");
     }
-    public GitResponse clone(CreateScanRequest createScanRequest, Project project){
+    public GitResponse clone(CreateScanRequest createScanRequest, Project project, Path path){
         try {
-            Path path = Paths.get(location + project.getProjectName());
             Git git = Git.cloneRepository()
-                    .setCredentialsProvider(new UsernamePasswordCredentialsProvider(createScanRequest.getUsername(), createScanRequest.getPassword()))
+                    .setCredentialsProvider(prepareCredentails(createScanRequest))
                     .setURI(project.getProjectRepoUrl())
                     .setDirectory(path.toFile())
                     .call();
@@ -67,4 +63,15 @@ public class GitClient {
         }
         return new GitResponse(false, "");
     }
+    private CredentialsProvider prepareCredentails(CreateScanRequest createScanRequest) {
+        if (createScanRequest.getUsername() ==null && createScanRequest.getPassword()!=null) {
+            return new UsernamePasswordCredentialsProvider("PRIVATE-TOKEN", createScanRequest.getPassword());
+        } else if (createScanRequest.getUsername() !=null && createScanRequest.getPassword()!=null ) {
+            return new UsernamePasswordCredentialsProvider(createScanRequest.getUsername(), createScanRequest.getPassword());
+        } else {
+            return null;
+        }
+    }
+
+
 }

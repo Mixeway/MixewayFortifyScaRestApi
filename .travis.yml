@@ -7,6 +7,7 @@ addons:
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=Mixeway_MixewayFortifyScaRestApi -Dsonar.login=${SONAR_TOKEN}
   - mvn package -DskipTests
+  - zip -r DependencyTrackScripts.zip DependencyTrackScripts
 
 deploy:
   provider: releases
@@ -14,7 +15,7 @@ deploy:
   api_key: $GH_TOKEN
   file_glob: true
   file:
-    - "README.md"
+    - "DependencyTrackScripts.zip"
     - "target/fortify*.jar"
   on:
     tags: true

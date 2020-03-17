@@ -1,8 +1,11 @@
 package io.mixeway.fortifyscaapi;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,23 +23,47 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     @Value("${allowed.users}")
     private String commonNames;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .x509()
-                .subjectPrincipalRegex("CN=(.*?)(?:,|$)")
-                .userDetailsService(userDetailsService());
+    @Profile("dev")
+    @Configuration
+    public static class DevSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            System.out.println("Enabling development mode");
+            http.csrf().disable();
+            http
+                    .authorizeRequests()
+                    .anyRequest()
+                    .permitAll();
+
+        }
     }
+    @Profile("!dev")
+    @Order(1)
+    @Configuration
+    public static class ProdSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            System.out.println("Enabling production mode");
+            http.csrf().disable();
+            http
+                    .authorizeRequests()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .x509()
+                    .subjectPrincipalRegex("CN=(.*?)(?:,|$)")
+                    .userDetailsService(userDetailsService());
+        }
+    }
+
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -44,7 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public UserDetails loadUserByUsername(String username) {
                 if (verifyCN(username)) {
                     return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
-                } else throw new UsernameNotFoundException("User not found!");
+                } else if (username=="dev"){
+                    return new User(username, "", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
+                } else
+                    throw new UsernameNotFoundException("User not found!");
             }
         };
     }

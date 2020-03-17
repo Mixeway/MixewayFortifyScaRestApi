@@ -39,6 +39,7 @@ java -Dhttps.proxyPort=<proxyPort> \
     --dependencytrack.script.python=<dTrackPython> \
     --dependencytrack.script.js=<dTrackJS> \
     --dependencytrack.script.php=<dTrackPHP> \
+    --spring.profiles.active=<profile> \
     -jar fortifyscaapi-1.0.0-SNAPSHOT.jar
 ```
 where:
@@ -49,6 +50,7 @@ keyStore, keyStorePassword - keystore for TLS
 trustStore, trustStorePassword - key store contaning certificates which will be accepted by API
 allowedUsers - CN of x509 Certificate which is authorized to use REST API
 dTrackMvn, dTrackJS, dTrackPHP, dTrackPython - path to scripts which are executing dependency track extraction and upload
+profile - dev for development (no authorization required) and anyother then dev to enable x509 auth
 ```
 
 ### Requirements

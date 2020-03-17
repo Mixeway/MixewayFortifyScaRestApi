@@ -63,14 +63,14 @@ public class FortifyRestApiService {
         GitResponse gitResponse = null;
         try {
             if (fortifyScanRepository.findByGroupNameAndRunning(createScanRequest.getGroupName(), true).size() != 0) {
-                fortifyScaClient.runCleanForProject(createScanRequest,fortifyScan);
+                //fortifyScaClient.runCleanForProject(createScanRequest,fortifyScan);
                 for (Project project : createScanRequest.getProjects()) {
                     logger.info("Starting processing of app {} in {} dtrackuuid is {} ", project.getProjectName(), project.getTechnique(),
                             project.getdTrackUuid()!=null ? project.getdTrackUuid() : "empty");
                     Path path = Paths.get(location + project.getProjectName());
                     if (Files.exists(path)) {
                         //git fetch
-                        gitResponse = gitClient.pull(createScanRequest,project);
+                        gitResponse = gitClient.pull(createScanRequest,project, path);
                         if (!gitResponse.getStatus())
                             throw new Exception("Some kind of error during pulling repo for " + project.getProjectName());
                         logger.info("Successfully fetched repo for {} commid id is {} branch {}",
@@ -80,7 +80,7 @@ public class FortifyRestApiService {
 
                     } else {
                         //git clone
-                        gitResponse = gitClient.clone(createScanRequest,project);
+                        gitResponse = gitClient.clone(createScanRequest,project, path);
                         if (!gitResponse.getStatus())
                             throw new Exception("Some kind of error during cloning repo for " + project.getProjectName());
                         logger.info("Successfully cloned repo for {} commit id is {}", project.getProjectName(),gitResponse.getCommitId());

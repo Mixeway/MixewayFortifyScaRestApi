@@ -1,5 +1,6 @@
 package io.mixeway.fortifyscaapi.dtrack;
 
+import io.mixeway.fortifyscaapi.pojo.CreateScanRequest;
 import io.mixeway.fortifyscaapi.pojo.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ public class DependencyTrackScriptExecutor {
     @Value("${code.base.location}")
     private String location;
 
-    public void runDTrackScript(Project project, String script) throws IOException {
+    public void runDTrackScript(CreateScanRequest createScanRequest, Project project, String script) throws IOException {
         logger.info("Starting to generate BOM for {}", project.getProjectName());
         Map<String,String> projects  = new HashMap<>();
         projects.put("test",null);
@@ -31,7 +32,7 @@ public class DependencyTrackScriptExecutor {
             String pathToLocation = location + (project.getProjectName() != null ? project.getProjectName() : "")
                     + (entry.getValue()!=null? "/"+entry.getValue() : "");
             ProcessBuilder builder = new ProcessBuilder();
-            builder.command("sh", "-c", script +" "+project.getdTrackUuid());
+            builder.command("sh", "-c", script,project.getdTrackUuid(), createScanRequest.getdTrackUrl(), createScanRequest.getdTrackUrl());
             builder.directory(Paths.get(pathToLocation).toFile());
             Process process = builder.start();
         }

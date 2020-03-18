@@ -63,7 +63,7 @@ public class FortifyRestApiService {
         GitResponse gitResponse = null;
         try {
             if (fortifyScanRepository.findByGroupNameAndRunning(createScanRequest.getGroupName(), true).size() != 0) {
-                //fortifyScaClient.runCleanForProject(createScanRequest,fortifyScan);
+                fortifyScaClient.runCleanForProject(createScanRequest,fortifyScan);
                 for (Project project : createScanRequest.getProjects()) {
                     logger.info("Starting processing of app {} in {} dtrackuuid is {} ", project.getProjectName(), project.getTechnique(),
                             project.getdTrackUuid()!=null ? project.getdTrackUuid() : "empty");
